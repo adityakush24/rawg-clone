@@ -4,6 +4,14 @@ import Navbar from './components/Navbar.vue'
 </script>
 
 <template>
+  <div bg-indigo-500>
+    <RouterView />
+  </div>
   <!-- <Navbar /> -->
-  <RouterView />
 </template>
+
+<style>
+  #app {
+    background-color: black;
+  }
+</style>
