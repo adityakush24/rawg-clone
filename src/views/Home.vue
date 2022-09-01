@@ -4,11 +4,20 @@ import { useGamesStore } from "../stores/games"
 import SideBar from "../components/Home/SideBar.vue"
 import GameList from "../components/Home/GameList.vue"
 let { games } = storeToRefs(useGamesStore());
-const { searchGames } = useGamesStore();
+const { searchGames, increasePageCount, getGames } = useGamesStore();
 let searchGamesFromGameStore = (event: any) => {
     searchGames(event.target.value.trim());
     console.log("called")
 };
+
+window.onscroll = () => {
+    let bottomOfWindow = Math.abs(document.documentElement.scrollTop + window.innerHeight - document.documentElement.offsetHeight) < 5;
+    if (bottomOfWindow) {
+        increasePageCount();
+        getGames();
+    }
+}
+
 </script>
     <template>
         <nav class="border-gray-200 px-1 sm:px-2 py-2.5 rounded bg-black">

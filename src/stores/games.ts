@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import axios from "axios";
 const link = import.meta.env.VITE_RAWG_API_LINK
 const key = import.meta.env.VITE_RAWG_API_KEY
-
 export const useGamesStore = defineStore({
   id: "games",
   state: () => ({
@@ -11,13 +10,14 @@ export const useGamesStore = defineStore({
     gameScreenshots: Array,
     gameGenres: Array,
     gamesBookmarked: [],
-    currentGameListTitle: String
+    currentGameListTitle: String,
+    currentPageNumber: 1
   }),
   actions: {
     async getGames() {
       try {
-        const response = await axios.get(`${link}/games?key=${key}&page_size=30`)
-        this.games = response.data.results;
+        const response = await axios.get(`${link}/games?key=${key}&page_size=30&page=${this.currentPageNumber}`)
+        this.games = this.games.concat(response.data.results)
       } catch (err: any) {
         console.log(err.message);
       }
@@ -86,6 +86,9 @@ export const useGamesStore = defineStore({
     },
     setCurrentGameListTitle(title: string) {
       this.currentGameListTitle = title;
+    },
+    increasePageCount() {
+      this.currentPageNumber = this.currentPageNumber + 1;
     }
   },
 });
